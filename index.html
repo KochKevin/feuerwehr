@@ -1,5 +1,17 @@
 <!DOCTYPE html>
-
-<title>Minimal sql.js-httpvfs demo</title>
-<script src="./dist/bundle.js"></script>
-<div>Hello World!</div>
+<html lang="en">
+  <head>
+    <title>Page Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.5.0/sql-wasm.js"></script>
+    <script>
+      // Load sql.js WebAssembly file
+      let config = {
+        locateFile: () => "/path/to/downloaded/sql-wasm.wasm",
+      };
+      initSqlJs(config).then(function (SQL) {
+          console.log("sql.js initialized 🎉");
+      });
+    </script>
+  </head>
+  <body></body>
+</html>
