@@ -1,4 +1,18 @@
-<?php
+
+
+<DOCTYPE html>
+<html lang="de">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Welcome</title>
+  </head>
+
+  <body>
+
+    <h1>Hello</h1>
+
+    <?php
 
   $servername = "localhost";
   $username = "id21538315_admin";
@@ -53,20 +67,6 @@
 }
   
 ?>
-
-<DOCTYPE html>
-<html lang="de">
-
-  <head>
-    <meta charset="utf-8">
-    <title>Welcome</title>
-  </head>
-
-  <body>
-
-    <h1>Hello</h1>
-
-
 
 
   </body>  
