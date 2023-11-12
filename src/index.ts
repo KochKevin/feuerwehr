@@ -13,7 +13,7 @@ async function load() {
         from: "inline",
         config: {
           serverMode: "full",
-          url: "/data.sqlite3",
+          url: "/hydrantData.sqlite3",
           requestChunkSize: 4096,
         },
       },
@@ -22,7 +22,7 @@ async function load() {
     wasmUrl.toString()
   );
 
-  const result = await worker.db.query("select * from nodes");
+  const result = await worker.db.query("select * from node_tags");
 
   document.body.textContent = JSON.stringify(result);
 }
