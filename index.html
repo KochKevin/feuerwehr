@@ -10,6 +10,25 @@
     
         <h1>Hallo Welt</h1>
 
+        <p id="output"></p>
+
+        <script>
+            var xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("output").innerHTML = this.responseText;
+            }
+            };
+
+            var command = "test";
+
+            xmlhttp.open("GET", "/serverSide/db_request.php?q=" + command, true);
+            xmlhttp.send();
+
+        </script>
+
+
       </body>  
     
      
