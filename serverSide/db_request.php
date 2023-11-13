@@ -46,6 +46,26 @@
 
         break;
 
+        case "getIDsandPos2":
+
+            //Connect
+            $mysqli = new mysqli($servername, $username, $password, $database);
+
+            //Set SQL COMMAND
+            $sqlCommand = "SELECT node_id, lon, lat FROM `hydrants`;";
+
+            //Gather Data from DB
+            $result = $mysqli->query($sqlCommand);
+        
+            //make it to json code and output it
+            echo($jsonData);
+            
+
+            //close the db connection
+            mysqli_close($connection);
+
+        break;
+
         default:
             $output = "error - Undefined request";
         break;
