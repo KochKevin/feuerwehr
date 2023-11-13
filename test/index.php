@@ -1,16 +1,31 @@
-
-
 <DOCTYPE html>
 <html lang="de">
 
   <head>
     <meta charset="utf-8">
     <title>Welcome</title>
+    <script src="./jQuery/jquery-3.7.1.js"></script>
   </head>
 
   <body>
 
     <h1>Hello</h1>
+
+    <p id="jQueryLog"></p>
+
+
+    <script>
+        window.onload = function() {
+      if (window.jQuery) {  
+          // jQuery is loaded  
+          document.getElementById("jQueryLog").innerHTML = "jQuery fully loaded<br>";
+      } else {
+          // jQuery is not loaded
+          document.getElementById("jQueryLog").innerHTML = "jQuery not fully loaded<br>";
+      }
+}
+    </script>
+
 
     <?php
 
