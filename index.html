@@ -1,0 +1,126 @@
+<DOCTYPE html>
+
+    <html lang="de">
+
+      <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+        <title></title>
+
+        <link rel="stylesheet" href="leaflet/leaflet.css">
+
+        <script src="leaflet/leaflet.js"></script>
+
+
+        <link rel="stylesheet" href="style.css">
+      </head>
+    
+      <body>
+    
+
+        <div id="map"></div>
+        <div id="overlay">
+
+            <button id="einsatzstelleOeffnen">Einsatzstelle Öffnen / Schließen</button>
+            <p id="einsatzstelleStatus"></p>
+
+            <button id="einsatzstelleBearbeiten">Einsatzstellen Position Bearbeiten</button>
+            <p id="einsatzstelleBearbeitenStatus"></p>
+
+        </div>
+       
+
+       
+
+        <script>
+
+            //Initalize Map
+
+            var map = L.map('map').setView([51.505, -0.09], 13);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            //Set Start Pos and Zoom
+            map.setView([52.41037, 10.17706], 15);
+
+
+            var markerList = [];
+
+
+            var marker = L.marker([52.41037, 10.17706]).addTo(map);
+
+
+            var div = L.DomUtil.get('overlay'); // this must be an ID, not class!
+            L.DomEvent.on(div, 'mousewheel', L.DomEvent.stopPropagation);
+            L.DomEvent.on(div, 'click', L.DomEvent.stopPropagation);
+
+
+
+            //Buttons
+            var einsatzstelleOeffnen = document.getElementById('einsatzstelleOeffnen');
+            var einsatzstelleBearbeiten = document.getElementById('einsatzstelleBearbeiten');
+
+            //Text
+            var einsatzstelleStatus = document.getElementById('einsatzstelleStatus');
+            var einsatzstelleBearbeitenStatus = document.getElementById('einsatzstelleBearbeitenStatus');
+
+            //Bools / Flags
+            var einsatzstelleAktiv = false;
+            var einsatzstelleBearbeitenAktiv = false;
+
+            //Marker
+            var einsatzstellenMarker = L.marker();
+            
+
+            einsatzstelleOeffnen.addEventListener('click', function() {
+
+                if(einsatzstelleAktiv == true){
+
+                    einsatzstelleStatus.textContent = "Inaktiv";
+                    einsatzstelleAktiv = false;
+                    einsatzstellenMarker.removeFrom(map);
+
+                }else{
+                    einsatzstelleStatus.textContent = "Aktiv";
+                    einsatzstelleAktiv = true;
+                }
+
+            });
+
+            einsatzstelleBearbeiten.addEventListener('click', function() {
+
+                if(einsatzstelleBearbeitenAktiv == true){
+
+                    einsatzstelleBearbeitenStatus.textContent = "";
+                    einsatzstelleBearbeitenAktiv = false;
+
+                }else{
+                    einsatzstelleBearbeitenStatus.textContent = "Position Bearbeiten";
+                    einsatzstelleBearbeitenAktiv = true;
+                }
+
+            });
+
+
+            map.on('click', function(ev) {
+                if(einsatzstelleBearbeitenAktiv){
+                    einsatzstellenMarker.setLatLng(ev.latlng);
+                    einsatzstellenMarker.addTo(map);
+                }
+           
+            });
+
+
+
+        </script>
+
+       
+    
+      </body>
+    
+    </html>
