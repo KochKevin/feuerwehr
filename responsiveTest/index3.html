@@ -1,0 +1,60 @@
+<DOCTYPE html>
+    <html lang="de">
+    
+      <head>
+        <!--
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        -->
+        <link rel="../stylesheet" href="leaflet/leaflet.css">
+        <script src="../leaflet/leaflet.js"></script>
+<!--
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+        <link rel="stylesheet" href="style.css">
+
+        <title>Hydranten</title>
+
+-->
+
+        
+      </head>
+    
+      <body>
+
+        <div id="map"></div>
+<!--
+        <div class="searchBar">
+
+          Suche
+
+          <span class="material-symbols-outlined">
+            search
+            </span>
+
+        </div>
+
+        <div class="infoTab">
+
+        </div>
+
+      -->
+        <script>
+            
+          var map = L.map('map').setView([51.505, -0.09], 13);
+
+          L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          }).addTo(map);
+
+          //Set Start Pos and Zoom
+         // map.setView([52.41037, 10.17706], 15);
+
+        </script>
+
+      </body>
+    
+     
+    </html>
+    

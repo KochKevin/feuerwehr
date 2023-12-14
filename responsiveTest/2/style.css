@@ -1,0 +1,69 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+html, body {
+    height: 100%;
+    width: 100vw;
+}
+
+#map{
+    height: 100%;
+    width: 100vw;
+    z-index: 0;
+}
+
+.searchButton{
+    position: absolute;
+    z-index: 1;
+    
+
+    background-color: white;
+    border-color: red;
+    border-style: solid;
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    border-width: 2px;
+
+    left: 40%;
+    margin-top: 5%;
+    
+
+    
+}
+
+.searchButton img{
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 80%;
+    height: auto;
+}
+
+
+.infoTab{
+
+    position: absolute;
+    z-index: 1;
+    top: 70%;
+
+    border-top: solid;
+    border-top-width: 3px;
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-top-color: red;
+/*
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+  */  
+    background-color: aliceblue;
+    height:30%;
+    width: 100%;
+
+}
