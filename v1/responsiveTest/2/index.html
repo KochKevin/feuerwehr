@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Titel</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+
+        <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+
+    <link rel="stylesheet" href="style.css">
+
+  </head>
+  <body>
+
+
+    <div class="searchButton" onclick="searchFieldToggleVisibility()">
+        <img src="icons/search.png" alt="Such Icon von Icons8">
+    </div>
+
+    <div class="gpsButton">
+      <img src="icons/myPositionDeActiv.png" alt="Such Icon von Icons8">
+  </div>
+
+    <div id="map"></div>
+
+    <div class="infoTab">
+      <!--Head Area-->
+      <div id="infoTabHead">
+
+        <div id="infoTabHeadMoveLine">
+          <hr>
+        </div>
+
+        <!--Sortiere-->
+        <br>
+
+        <hr>
+
+      </div>
+
+
+    </div>
+
+    <div id="searchField">
+        <h1>Routenplaner</h1>
+
+        <div id="searchFieldStart">
+
+          <h2>Start</h2>
+        
+          <div id="searchFieldMyPosition">
+  
+            <img src="icons/myPositionDeActiv.png" alt="Richtung Zentrum Icon von Icons8">
+  
+            <h2>Aktuellen Standort</h2>
+
+          </div>
+
+          <input type="text" name="start" >
+          
+
+        </div>
+
+        <div id="searchFieldDestination">
+
+          <h2>Ziel</h2>
+
+          <input type="text" name="destination" >
+
+        </div>
+
+        <button id="searchFieldSearchButton" type="button">Suche</button> 
+        
+    </div>
+
+
+
+    <script>
+        var map = L.map('map').setView([52.41037, 10.17706], 17);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            
+        }).addTo(map);
+
+   
+
+        /*Toggel Gps button*/
+        var toggleGPS = false;
+
+
+
+
+        /*Toggel Search Button and Search Field*/
+        var searchFieldVisibility = true;
+
+        function searchFieldToggleVisibility(){
+
+          if(searchFieldVisibility){
+            searchFieldSetVisible(true);
+            searchFieldVisibility = false;
+          }
+          else
+          {
+            searchFieldSetVisible(false);
+            searchFieldVisibility = true;
+          } 
+
+        }
+
+        function searchFieldSetVisible(isVisible){
+
+          if(isVisible){
+            var field = document.getElementById("searchField");
+            field.style.display = 'block';
+          }
+          else
+          {
+            var field = document.getElementById("searchField");
+            field.style.display = 'none';
+          }
+
+        }
+
+       
+
+    </script>
+
+  </body>
+</html>

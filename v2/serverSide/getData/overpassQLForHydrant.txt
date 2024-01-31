@@ -1,0 +1,17 @@
+[out:json]
+[timeout:25]
+;
+area(3601177827)->.searchArea;
+(
+  node
+    ["emergency"="fire_hydrant"]
+    (area.searchArea);
+  node
+    ["emergency"="suction_point"]
+    (area.searchArea);
+);
+(
+  ._;
+  >;
+);
+out meta;

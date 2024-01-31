@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+    </head>
+
+    <body>
+
+        <div class='output'></div>
+
+
+       
+
+        <script type="module">
+            
+            import PathFinder from "./node_modules/geojson-path-finder/src/index";
+
+            var geojson = fetch('https://equipollent-particl.000webhostapp.com/geoJson/network.geojson')
+            .then((response) => response.json());
+
+            var output = document.getElementById('output');
+
+            var pathFinder = new PathFinder(geojson);
+
+            var start = "{ 'type': 'Point', 'coordinates': [30.0, 10.0] }";
+            var finish = "{ 'type': 'Point', 'coordinates': [30.0, 10.0] }";
+
+            var path = pathfinder.findPath(start, finish);
+
+            output.textContent = path;
+            
+            /*
+
+            console.log("fetch: ");
+            fetch('https://equipollent-particl.000webhostapp.com/geoJson/network.geojson')
+            .then((response) => response.json())
+            .then((json) => console.log(json));
+            */
+
+        </script>
+
+
+    </body>
+
+</html>

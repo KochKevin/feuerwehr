@@ -1,0 +1,65 @@
+[out:json]
+[timeout:25]
+;
+area(3601177827)->.searchArea;
+(
+  nwr
+    ["highway"="motorway"]
+    (area.searchArea);
+  nwr
+    ["highway"="trunk"]
+    (area.searchArea);
+  nwr
+    ["highway"="primary"]
+    (area.searchArea);
+  nwr
+    ["highway"="secondary"]
+    (area.searchArea);
+  nwr
+    ["highway"="tertiary"]
+    (area.searchArea);
+  nwr
+    ["highway"="unclassified"]
+    (area.searchArea);
+  nwr
+    ["highway"="motorway_link"]
+    (area.searchArea);
+  nwr
+    ["highway"="trunk_link"]
+    (area.searchArea);
+  nwr
+    ["highway"="primary_link"]
+    (area.searchArea);
+  nwr
+    ["highway"="secondary_link"]
+    (area.searchArea);
+  nwr
+    ["highway"="tertiary_link"]
+    (area.searchArea);
+  nwr
+    ["highway"="residential"]
+    (area.searchArea);
+  nwr
+    ["highway"="service"]
+    (area.searchArea);
+  nwr
+    ["highway"="road"]
+    (area.searchArea);
+  nwr
+    ["highway"="living_street"]
+    (area.searchArea);
+  nwr
+    ["highway"="pedestrian"]
+    (area.searchArea);
+  nwr
+    ["highway"="track"]
+    (area.searchArea);
+  nwr["junction"="roundabout"]
+    (area.searchArea);
+
+);
+(
+  ._;
+  >;
+);
+out meta;

@@ -1,0 +1,40 @@
+<DOCTYPE html>
+    <html lang="de">
+    
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Welcome</title>
+        <script src="./modules/connectDB.js"></script>
+      </head>
+    
+      <body>
+    
+        <h1>Hallo Welt</h1>
+
+        <p id="output"></p>
+
+
+    <script>
+
+        //callDB("getInfo").then(response => console.log(response));
+
+       
+        var json;
+
+        callDB("getInfo")
+        .then((responseData) => console.log(responseData))
+        .then(responseData => {
+          document.getElementById("output").textContent = responseData;
+        });
+        //.then(() => console.log(responseData));
+
+       console.log(json);
+        
+
+    </script>
+
+      </body>
+    
+     
+    </html>
+    
