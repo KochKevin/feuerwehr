@@ -17,6 +17,43 @@ class PriorityQueue{
     }
 }
 
+//vector calculations:
+function vectorSubtraction(vector1, vector2) {
+    return [vector1[0] - vector2[0], vector1[1] - vector2[1]];
+}
+
+function dotProduct(vector1, vector2) {
+    return vector1[0] * vector2[0] + vector1[1] * vector2[1];
+}
+
+function vectorLength(vector) {
+    return Math.sqrt(vector[0]**2 + vector[1]**2);
+}
+
+function orthogonalDistance(position, lineStart, lineEnd) {
+    // Vektor zwischen den beiden Nodes (Linienvektor)
+    const lineVector = vectorSubtraction(lineEnd, lineStart);
+
+    // Vektor vom Startpunkt der Linie zum Benutzer
+    const vectorToPosition = vectorSubtraction(position, lineStart);
+
+    // Berechne die Projektion des Benutzer-Vektors auf die Linie
+    const projection = dotProduct(vectorToPosition, lineVector) / vectorLength(lineVector);
+
+    // Berechne den orthogonalen Abstand
+    const distance = vectorLength(vectorToPosition) - projection;
+
+    return distance;
+}
+
+
+// Beispielanwendung:
+const userLocation = [37.7749, -122.4194];  // Benutzerstandort
+const lineStart = [37.7750, -122.4190];  // Startpunkt der Linie
+const lineEnd = [37.7760, -122.4180];  // Endpunkt der Linie
+
+const distance = orthogonalDistance(userLocation, lineStart, lineEnd);
+console.log("Orthogonaler Abstand des Benutzers zur Linie:", distance);
 
 //Change Distance Function to inbuilt leaflet function
 //See https://leafletjs.com/reference.html#latlng-distanceto
@@ -37,8 +74,6 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
     return distanceInKm;
 }
-
-
 
 
 /*
@@ -78,14 +113,19 @@ class MapSystem
     nodeMap = new Map();
     leafletMap = null;
 
-    #currentPathToGo;
-    #routeIsCalculated;
 
+    //array of node ids of the calulated path
+    #pathData;
+    //array of all polylines for path
+    #routeLines;
+    //int count of how many nodes are passed
+    #routeProgress;
+    //Polyline from current position to next node on path
+    #nextNodeLine;
     constructor(nodeNetworkJson, leafletMap){
         //First Step is to convert the JSON to a JS Map
         this.#createNodeMap(nodeNetworkJson);
         this.leafletMap = leafletMap;
-        this.#routeIsCalculated = false;
 
     }
 
@@ -99,7 +139,6 @@ class MapSystem
     startRouting2(startLat, startLon, endLat, endLon)
     {
 
-        this.#routeIsCalculated = false;
 
         var startNode = this.findNearestStreetNode(startLat, startLon);
         var endNode = this.findNearestStreetNode(endLat, endLon);
@@ -130,32 +169,93 @@ class MapSystem
 
         */
     }
-/*
+
+    
+
     startRouting3(startNode, goalNode){
+        this.#routeProgress = 0;
+        
+
         var cameFrom = this.#dijkstra(startNode, goalNode);
-        this.#currentPathToGo = this.#reconstructPath2(cameFrom, goalNode, startNode);
+        this.#pathData = this.#reconstructPath2(cameFrom, goalNode, startNode).reverse();
+        this.builtRoute(this.#pathData);
+        this.#nextNodeLine =  L.polyline([[0, 0],[0, 0]], {color: 'red'}).addTo(this.leafletMap);
     }
 
 
     routingUpdate(currentPositionLat, currentPositionLon){
 
-        if(!this.#routeIsCalculated){
+        if (typeof this.#routeProgress == 'undefined') {
             return;
         }
 
         var currentPosition = L.latLng(currentPositionLat, currentPositionLon);
 
-        //var nextNode = this.#currentPathToGo.pop();
+        console.log("Route Progress: " + this.#routeProgress);
 
-        console.log("Distance: " + currentPosition.distanceTo(L.latLng(this.nodeMap.get(String(this.#currentPathToGo[this.#currentPathToGo.length - 1])).lat, this.nodeMap.get(String(this.#currentPathToGo[this.#currentPathToGo.length - 1])).lon)));
+        var currentNodePositon = L.latLng(this.nodeMap.get(String(this.#pathData[this.#routeProgress])).lat, this.nodeMap.get(String(this.#pathData[this.#routeProgress])).lon);
 
-        if(currentPosition.distanceTo(L.latLng(this.nodeMap.get(String(this.#currentPathToGo[this.#currentPathToGo.length - 1])).lat, this.nodeMap.get(String(this.#currentPathToGo[this.#currentPathToGo.length - 1])).lon)) <= 30){
-            this.#currentPathToGo.pop();
+        this.#nextNodeLine.setLatLngs([currentPosition,currentNodePositon]);
+
+        console.log("Distance: " + currentPosition.distanceTo(currentNodePositon));
+
+        //10 guter wert um auf der Straße zu bleiben
+        if(currentPosition.distanceTo(currentNodePositon) < 10){
+
+
+            if(this.#routeProgress == this.#pathData.length - 1){
+                console.warn("END OF PATH REACHED");
+                return;
+            }
+
+            this.#routeLines[this.#routeProgress].setStyle({color: 'grey'});
+            
+            this.#routeProgress++;
+
         }
 
-
     }
-*/
+
+    builtRoute(nodePath)
+    {
+
+        this.#routeLines = [];
+
+        for(let i = 0; i < nodePath.length; i++){
+
+
+
+            var currentNodeLat = this.nodeMap.get(String(nodePath[i])).lat;
+            var currentNodeLon = this.nodeMap.get(String(nodePath[i])).lon;
+
+
+            if(i == nodePath.length-1){     
+                //console.log("Route Size: " + this.#routeLines.length + " vs Node Path Size: " + nodePath.length);
+                return;
+            }
+
+            
+            var nextNodeLat = this.nodeMap.get(String(nodePath[i + 1])).lat;
+            var nextNodeLon = this.nodeMap.get(String(nodePath[i + 1])).lon;
+
+            var r = Math.floor(Math.random() * 255);
+            var g = Math.floor(Math.random() * 255);
+            var b = Math.floor(Math.random() * 255);
+            
+
+            var color = "rgb("+r+" ,"+g+","+ b+")"; 
+
+            color = "red";
+
+            this.#routeLines.push(L.polyline([[currentNodeLat, currentNodeLon],[nextNodeLat, nextNodeLon]], {color: color}).addTo(this.leafletMap));
+            
+        }
+
+        
+    }
+
+
+
     findNearestStreetNode(startLat, startLon){
 
         var shortestDistance = Infinity;
@@ -194,8 +294,6 @@ class MapSystem
                 });
             }
         }
-
-
     }
 
     //TODO dijkstra -> A*?
@@ -267,28 +365,7 @@ class MapSystem
         return nodePath;
     }
 
-    #routeLines;
-
-    #buildLinePath(nodePath){
-
-        for(let i = 0; i < nodePath.length; i++){
-
-            var currentNodeLat = this.nodeMap.get(String(nodePath[i])).lat;
-            var currentNodeLon = this.nodeMap.get(String(nodePath[i])).lon;
-
-
-            if(i == nodePath.length-1){     
-                return;
-            }
-
-            var nextNodeLat = this.nodeMap.get(String(nodePath[i + 1])).lat;
-            var nextNodeLon = this.nodeMap.get(String(nodePath[i + 1])).lon;
-            //console.log(this.leafletMap);
-            this.#routeLines.push(L.polyline([[currentNodeLat, currentNodeLon],[nextNodeLat, nextNodeLon]], {color: pathColor}).addTo(this.leafletMap));
-        }
-
-    }
-
+    
     #drawPath(nodePath, pathColor){
        
         for(let i = 0; i < nodePath.length; i++){
@@ -451,18 +528,19 @@ loadSite().then(()=>{
     function onMapClick2(e){
 
 
-        mapSys.startRouting2(currentPos.latitude, currentPos.longitude, e.latlng.lat, e.latlng.lng);
-        //mapSys.startRouting3();
+        //mapSys.startRouting2(currentPos.latitude, currentPos.longitude, e.latlng.lat, e.latlng.lng);
+        //StartNode, GoalNode
+        //mapSys.startRouting3(3605228749, 3615504064);
     }
     
-
+    mapSys.startRouting3(3605228749, 3615504064);
     var mouseLatLon;
     var mouseLine =  L.polyline([[0, 0],[0, 0]], {color: 'green'}).addTo(map);
 
     function onMouseMove(e){
 
         mouseLatLon = e.latlng;
-        console.log("Mouse Lat Lon: " + mouseLatLon.toString());
+        //console.log("Mouse Lat Lon: " + mouseLatLon.toString());
         mouseLine.setLatLngs([[52.409928, 10.183599],mouseLatLon]);
         mapSys.routingUpdate(mouseLatLon.lat, mouseLatLon.lng);
     }
@@ -485,7 +563,7 @@ loadSite().then(()=>{
     var currentPosMarker = L.marker([51.5, -0.09]).addTo(map);
 
     function onLocateSuccess(pos){
-        console.log("Position: " + pos.coords.latitude + " lat " + pos.coords.longitude + " lon | Accuracy: " + pos.coords.accuracy + " | Heading: " + pos.coords.heading + " | Speed: " + pos.coords.speed + " | TIMESTAMP : " + pos.timestamp);
+        console.log("New Location Position: " + pos.coords.latitude + " lat " + pos.coords.longitude + " lon | Accuracy: " + pos.coords.accuracy + " | Heading: " + pos.coords.heading + " | Speed: " + pos.coords.speed + " | TIMESTAMP : " + pos.timestamp);
         var date = new Date(pos.timestamp);
         document.getElementById('text').textContent = "Position: " + pos.coords.latitude + " lat " + pos.coords.longitude + " lon | Accuracy: " + pos.coords.accuracy + " | Heading: " + pos.coords.heading + " | Speed: " + pos.coords.speed + " | TIMESTAMP : " + date.getHours() + ":" + date.getMinutes()+":"+ date.getSeconds();
         currentPosMarker.setLatLng(L.latLng(pos.coords.latitude, pos.coords.longitude));
