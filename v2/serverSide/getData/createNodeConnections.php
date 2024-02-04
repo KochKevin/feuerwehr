@@ -170,6 +170,8 @@ for($i = 0; $i < count($elementsData); $i++){
 
     }
 
+    
+
     //Check if street is a one way or roundabout
     $isOneWay = false;
     //Check if oneway

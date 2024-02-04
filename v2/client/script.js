@@ -528,12 +528,12 @@ loadSite().then(()=>{
     function onMapClick2(e){
 
 
-        //mapSys.startRouting2(currentPos.latitude, currentPos.longitude, e.latlng.lat, e.latlng.lng);
+        mapSys.startRouting2(currentPos.latitude, currentPos.longitude, e.latlng.lat, e.latlng.lng);
         //StartNode, GoalNode
         //mapSys.startRouting3(3605228749, 3615504064);
     }
     
-    mapSys.startRouting3(3605228749, 3615504064);
+    //mapSys.startRouting3(3605228749, 3615504064);
     var mouseLatLon;
     var mouseLine =  L.polyline([[0, 0],[0, 0]], {color: 'green'}).addTo(map);
 
